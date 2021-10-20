@@ -11,9 +11,12 @@ app.get('/', function (req, res) {
     res.sendFile(process.cwd() + '/views/index.html');
 });
 
-app.post('/api/fileanalyse', function(req, res) {
-    const response = req.body;
-    console.log(response);
+app.post('/api/fileanalyse', multer().single('upfile'), function(req, res) {
+    const response = req.file;
+    const name = response.originalname;
+    const type = response.mimetype;
+    const size = response.size;
+    res.json({name, size, type});
 });
 
 const port = process.env.PORT || 3000;
